@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://file.garden/Z6dDZnlsF39IcGo1/KABANATA%2039-40%20(5).png') no-repeat center center fixed;
+            background-size: cover;
+            color: black;
+        }
+        .container {
+            background: rgba(216, 205, 165, 0.4); /* slightly transparent */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .user-type {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .user-type label {
+            background: #B1A063;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100px;
+            text-align: center;
+            font-weight: bold;
+            display: block;
+        }
+        .user-type label:hover {
+            background: #CEBC7D;
+        }
+        .user-type input {
+            display: none;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #B1A063;
+            border-radius: 5px;
+        }
+        button {
+            background: #B1A063;
+            color: black;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #CEBC7D;
+        }
+    </style>
+    <script>
+        function toggleInput(userType) {
+            let studentFields = document.getElementById('studentFields');
+            let teacherFields = document.getElementById('teacherFields');
+    
+            if (userType === 'student') {
+                studentFields.style.display = 'block';
+                teacherFields.style.display = 'none';
+    
+                document.getElementById("studentName").required = true;
+                document.getElementById("lrn").required = true;
+                document.getElementById("gradeLevel").required = true;
+                document.getElementById("teacherName").required = false;
+                document.getElementById("teacherId").required = false;
+                document.getElementById("department").required = false;
+            } else {
+                studentFields.style.display = 'none';
+                teacherFields.style.display = 'block';
+    
+                document.getElementById("studentName").required = false;
+                document.getElementById("lrn").required = false;
+                document.getElementById("gradeLevel").required = false;
+                document.getElementById("teacherName").required = true;
+                document.getElementById("teacherId").required = true;
+                document.getElementById("department").required = true;
+            }
+        }
+    
+        async function submitForm(event) {
+            event.preventDefault();
+    
+            let userType = document.querySelector('input[name="userType"]:checked')?.value;
+            if (!userType) {
+                alert("Please select user type.");
+                return;
+            }
+    
+            let formData = {
+                userType,
+                name: userType === "student" ? document.getElementById("studentName").value.trim() : document.getElementById("teacherName").value.trim(),
+                lrn: userType === "student" ? document.getElementById("lrn").value.trim() : null,
+                gradeLevel: userType === "student" ? document.getElementById("gradeLevel").value : null,
+                teacherId: userType === "teacher" ? document.getElementById("teacherId").value.trim() : null,
+                department: userType === "teacher" ? document.getElementById("department").value : null,
+            };
+    
+            let firebaseURL = "https://login2-190b9-default-rtdb.firebaseio.com/users.json";
+    
+            try {
+                let response = await fetch(firebaseURL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData),
+                });
+    
+                let result = await response.json();
+    
+                // ✅ Save the user name to localStorage
+                localStorage.setItem("userName", formData.name);
+    
+                alert("Data saved successfully!");
+                window.location.href = "FIRST.html";  // or index.html, depending on your actual homepage file name
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Failed to save data.");
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form onsubmit="submitForm(event)">
+
+            <div class="user-type">
+                <input type="radio" id="student" name="userType" value="student" required onclick="toggleInput('student')">
+                <label for="student">Student</label>
+        
+                <input type="radio" id="teacher" name="userType" value="teacher" required onclick="toggleInput('teacher')">
+                <label for="teacher">Teacher</label>
+            </div>
+        
+            <div id="studentFields" style="display: none;">
+                <div class="form-group">
+                    <label for="studentName">Name:</label>
+                    <input type="text" id="studentName" name="studentName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lrn">LRN:</label>
+                    <input type="text" id="lrn" name="lrn" required>
+                </div>
+                <div class="form-group">
+                    <label for="gradeLevel">Grade Level:</label>
+                    <select id="gradeLevel" name="gradeLevel" required>
+                        <option value="">Select Grade</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+            </div>
+        
+            <div id="teacherFields" style="display: none;">
+                <div class="form-group">
+                    <label for="teacherName">Name:</label>
+                    <input type="text" id="teacherName" name="teacherName" required>
+                </div>
+                <div class="form-group">
+                    <label for="teacherId">Teacher ID:</label>
+                    <input type="text" id="teacherId" name="teacherId" required>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department:</label>
+                    <select id="department" name="department" required>
+                        <option value="">Select Department</option>
+                        <option value="ADMIN">Admin</option>
+                        <option value="Math">Math</option>
+                        <option value="KOMPAN">Kompan</option>
+                        <option value="TLE">TLE</option>
+                        <option value="PE">PE</option>
+                        <option value="Science">Science</option>
+                        <option value="English">Oral Communication</option>
+                        <option value="UCSP">UCSP</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

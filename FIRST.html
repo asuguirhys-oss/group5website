@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cookie Academy</title>
+<link rel="stylesheet" href="style.css" />
+<script defer src="script.js"></script>
+<style>
+  header {
+    background:#b55a1f; 
+    color:#fff; 
+    padding:12px 20px; 
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .site-title {
+    max-width: 65%;
+  }
+  .site-title h1 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  .site-title p {
+    margin: 4px 0 0 0;
+    font-size: 0.9rem;
+  }
+  .top-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #fff;
+    font-weight: 600;
+  }
+  #darkModeToggle {
+    background:none; 
+    border:none; 
+    cursor:pointer; 
+    font-size:1.2rem; 
+    color:#fff;
+  }
+  #avatar-select {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  #avatar-display {
+    font-size: 1.6rem;
+    margin-left: 8px;
+  }
+  /* Modal styling */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+  }
+  .modal-content.certificate {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .modal-content button {
+    margin: 10px 5px 0 5px;
+    padding: 8px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    border: none;
+    background-color: #b55a1f;
+    color: white;
+  }
+</style>
+</head>
+<body>
+
+<header class="header-container">
+  <div class="header-main">
+    <h1>🍪 <strong>Cookie Academy</strong> 🍪</h1>
+    <p>Learn, bake, and hone your skills — test your knowledge one sweet bite at a time!</p>
+  </div>
+
+  <div class="header-welcome">
+    🌙 Welcome, <strong id="welcomeName">Guest</strong> 🎂
+  </div>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const welcomeName = document.getElementById('welcomeName');
+    const storedName = localStorage.getItem('userName');
+  
+    if (storedName && storedName.trim() !== '') {
+      welcomeName.textContent = storedName;
+    } else {
+      welcomeName.textContent = 'Guest';
+    }
+  
+    // Your other existing DOMContentLoaded code below...
+  });
+  </script>
+</header>
+
+<!-- Floating Cookies -->
+<div class="cookie" style="left:10%; animation-delay:0s;"></div>
+<div class="cookie" style="left:30%; animation-delay:5s;"></div>
+<div class="cookie" style="left:50%; animation-delay:10s;"></div>
+<div class="cookie" style="left:70%; animation-delay:15s;"></div>
+<div class="cookie" style="left:90%; animation-delay:7s;"></div>
+
+<nav>
+  <button onclick="showSection('lessons')">Lessons</button>
+  <button onclick="showSection('tests')">Practice Tests</button>
+</nav>
+
+<main id="content"></main>
+
+<div id="certificateModal" class="modal">
+    <div class="modal-content certificate">
+      <h2>🍪 Certificate of Achievement 🍪</h2>
+      <p>This certifies that</p>
+      <h3 id="certName">[User Name]</h3>
+      <p>has completed the</p>
+      <h3 id="certCourse">[Course Name]</h3>
+      <h3 id="certScore" style="margin: 10px 0; color: #b55a1f;"></h3>  <!-- ADDED -->
+      <p>Earned on <span id="certDate"></span></p>
+      <button id="downloadCertBtn">Download Certificate</button>
+      <button id="closeCertBtn">Close</button>
+    </div>
+  </div>
+<!-- Load html2canvas properly -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Close button hides modal
+  document.getElementById('closeCertBtn').addEventListener('click', () => {
+    document.getElementById('certificateModal').style.display = 'none';
+  });
+
+  // Download button triggers html2canvas
+  document.getElementById('downloadCertBtn').addEventListener('click', () => {
+    const certificate = document.querySelector('.modal-content.certificate');
+    html2canvas(certificate).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'cookie-certificate.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  });
+
+  // Example: Show modal on page load for testing
+  // Remove/comment this in production
+  //document.getElementById('certificateModal').style.display = 'block';
+
+  // Avatar code (assuming avatar-select exists in your page)
+  const avatarDisplay = document.getElementById('avatar-display');
+  const avatarSelect = document.getElementById('avatar-select');
+
+  function saveAvatar(value) {
+    if(avatarDisplay) avatarDisplay.textContent = value;
+    // localStorage.setItem('selectedAvatar', value);
+  }
+
+  if (avatarSelect) {
+    avatarSelect.addEventListener('change', e => saveAvatar(e.target.value));
+    saveAvatar(avatarSelect.value);
+  }
+});
+</script>
+
+</body>
+</html>

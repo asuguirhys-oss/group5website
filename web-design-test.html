@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Web Design Practice Test</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f1e3;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        color: #6d4c41;
+    }
+    .question {
+        background: #fff3e0;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    }
+    .question h3 {
+        margin-top: 0;
+    }
+    button {
+        display: inline-block;
+        margin: 20px 10px;
+        padding: 10px 20px;
+        background: #ff7043;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #e64a19;
+    }
+    .back-btn {
+        background: #555;
+    }
+    .back-btn:hover {
+        background: #333;
+    }
+    .correct {
+        background-color: #c8e6c9;
+    }
+    .incorrect {
+        background-color: #ffcdd2;
+    }
+    #result {
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        margin-top: 15px;
+    }
+    .answer-text {
+        margin-top: 8px;
+        font-style: italic;
+        color: #333;
+    }
+</style>
+</head>
+<body>
+<h1>Web Design - Practice Test</h1>
+
+<form id="quizForm" onsubmit="return false;">
+    <div class="question" data-answer="A" data-answer-text="Page Title">
+        <h3>1. The text shown in the browser tab that describes the name of the webpage.</h3>
+        <label><input type="radio" name="q1" value="A"> A. Page Title</label><br>
+        <label><input type="radio" name="q1" value="B"> B. Navigation</label><br>
+        <label><input type="radio" name="q1" value="C"> C. Footer</label>
+    </div>
+
+    <div class="question" data-answer="A" data-answer-text="Navigation">
+        <h3>2. The clickable words or buttons that take you to other parts of the website.</h3>
+        <label><input type="radio" name="q2" value="A"> A. Navigation</label><br>
+        <label><input type="radio" name="q2" value="B"> B. Grid Layout</label><br>
+        <label><input type="radio" name="q2" value="C"> C. Graphics</label>
+    </div>
+
+    <div class="question" data-answer="A" data-answer-text="Footer">
+        <h3>3. The bottom section of a webpage that often contains contact information or links.</h3>
+        <label><input type="radio" name="q3" value="A"> A. Footer</label><br>
+        <label><input type="radio" name="q3" value="B"> B. Page Title</label><br>
+        <label><input type="radio" name="q3" value="C"> C. Graphics</label>
+    </div>
+
+    <div class="question" data-answer="A" data-answer-text="Grid Layout">
+        <h3>4. The framework of rows and columns used to organize content on a webpage.</h3>
+        <label><input type="radio" name="q4" value="A"> A. Grid Layout</label><br>
+        <label><input type="radio" name="q4" value="B"> B. Navigation</label><br>
+        <label><input type="radio" name="q4" value="C"> C. Footer</label>
+    </div>
+
+    <div class="question" data-answer="A" data-answer-text="Graphics">
+        <h3>5. Visual elements like images, icons, or illustrations used to enhance a website’s appearance.</h3>
+        <label><input type="radio" name="q5" value="A"> A. Graphics</label><br>
+        <label><input type="radio" name="q5" value="B"> B. Grid Layout</label><br>
+        <label><input type="radio" name="q5" value="C"> C. Page Title</label>
+    </div>
+
+    <button type="button" onclick="checkAnswers()">Submit</button>
+    <button type="button" class="back-btn" onclick="window.location.href='FIRST.html'">Back</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+function checkAnswers() {
+    const questions = document.querySelectorAll('.question');
+    let score = 0;
+
+    questions.forEach(q => {
+        const correctAnswer = q.getAttribute('data-answer');
+        const correctText = q.getAttribute('data-answer-text');
+        const selected = q.querySelector('input[type="radio"]:checked');
+
+        q.classList.remove('correct', 'incorrect');
+
+        const oldAnswer = q.querySelector('.answer-text');
+        if (oldAnswer) oldAnswer.remove();
+
+        if (selected) {
+            if (selected.value === correctAnswer) {
+                q.classList.add('correct');
+                score++;
+            } else {
+                q.classList.add('incorrect');
+            }
+        } else {
+            q.classList.add('incorrect');
+        }
+
+        const answerDisplay = document.createElement('div');
+        answerDisplay.classList.add('answer-text');
+        answerDisplay.textContent = `Correct answer: ${correctText}`;
+        q.appendChild(answerDisplay);
+    });
+
+    const resultText = `You scored ${score} out of ${questions.length}`;
+    document.getElementById('result').textContent = resultText;
+
+    localStorage.setItem('score-WebDesignTest', `${score}/${questions.length}`);
+
+    alert(`Test completed! Your score: ${score}/${questions.length}`);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Tools Practice Test</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f1e3;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        color: #6d4c41;
+    }
+    .question {
+        background: #fff3e0;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    }
+    .question h3 {
+        margin-top: 0;
+    }
+    button {
+        display: inline-block;
+        margin: 20px 10px;
+        padding: 10px 20px;
+        background: #ff7043;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #e64a19;
+    }
+    .back-btn {
+        background: #555;
+    }
+    .back-btn:hover {
+        background: #333;
+    }
+    .correct {
+        background-color: #c8e6c9;
+    }
+    .incorrect {
+        background-color: #ffcdd2;
+    }
+    #result {
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        margin-top: 15px;
+    }
+    .answer-text {
+        margin-top: 8px;
+        font-style: italic;
+        color: #333;
+    }
+</style>
+</head>
+<body>
+<h1>Online Tools - Practice Test</h1>
+
+<form id="quizForm">
+    <div class="question" data-answer="A" data-answer-text="Organization software">
+        <h3>1. Which software is used to optimize daily task performance including project management software, note-taking programs, journals, and day planners?</h3>
+        <label><input type="radio" name="q1" value="A"> A. Organization software</label><br>
+        <label><input type="radio" name="q1" value="B"> B. Presentation software</label><br>
+        <label><input type="radio" name="q1" value="C"> C. Spreadsheet software</label>
+    </div>
+
+    <div class="question" data-answer="A" data-answer-text="Presentation software">
+        <h3>2. Which type of software is designed to create sequences of words and images to support a speech or a public presentation?</h3>
+        <label><input type="radio" name="q2" value="A"> A. Presentation software</label><br>
+        <label><input type="radio" name="q2" value="B"> B. Word processing software</label><br>
+        <label><input type="radio" name="q2" value="C"> C. Graphic design and editing software</label>
+    </div>
+
+    <div class="question" data-answer="A" data-answer-text="Spreadsheet software">
+        <h3>3. In which software do you enter data in rows and columns, store information in cells, and use formulas that update automatically when a value changes?</h3>
+        <label><input type="radio" name="q3" value="A"> A. Spreadsheet software</label><br>
+        <label><input type="radio" name="q3" value="B"> B. Organization software</label><br>
+        <label><input type="radio" name="q3" value="C"> C. Presentation software</label>
+    </div>
+
+    <div class="question" data-answer="A" data-answer-text="Graphic design and editing software">
+        <h3>4. Which type of software is used to create, edit, and manage 2D images such as logos, headings, and backgrounds?</h3>
+        <label><input type="radio" name="q4" value="A"> A. Graphic design and editing software</label><br>
+        <label><input type="radio" name="q4" value="B"> B. Spreadsheet software</label><br>
+        <label><input type="radio" name="q4" value="C"> C. Organization software</label>
+    </div>
+
+    <div class="question" data-answer="A" data-answer-text="Word processing software">
+        <h3>5. Which type of software is widely used to create or edit typed documents and allows changes in color, text size, and margins?</h3>
+        <label><input type="radio" name="q5" value="A"> A. Word processing software</label><br>
+        <label><input type="radio" name="q5" value="B"> B. Presentation software</label><br>
+        <label><input type="radio" name="q5" value="C"> C. Spreadsheet software</label>
+    </div>
+
+    <button type="button" onclick="checkAnswers()">Submit</button>
+    <button type="button" class="back-btn" onclick="window.location.href='FIRST.html'">Back</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+    function checkAnswers() {
+        const questions = document.querySelectorAll('.question');
+        let score = 0;
+    
+        questions.forEach(q => {
+            const correctAnswer = q.getAttribute('data-answer');
+            const correctText = q.getAttribute('data-answer-text');
+            const selected = q.querySelector('input[type="radio"]:checked');
+    
+            q.classList.remove('correct', 'incorrect');
+    
+            const oldAnswer = q.querySelector('.answer-text');
+            if (oldAnswer) oldAnswer.remove();
+    
+            if (selected) {
+                if (selected.value === correctAnswer) {
+                    q.classList.add('correct');
+                    score++;
+                } else {
+                    q.classList.add('incorrect');
+                }
+            } else {
+                q.classList.add('incorrect');
+            }
+    
+            const answerDisplay = document.createElement('div');
+            answerDisplay.classList.add('answer-text');
+            answerDisplay.textContent = `Correct answer: ${correctText}`;
+            q.appendChild(answerDisplay);
+        });
+    
+        const resultText = `You scored ${score} out of ${questions.length}`;
+        document.getElementById('result').textContent = resultText;
+    
+        // ✅ Save score with unique key for this test
+        localStorage.setItem('score-Online Tools', `${score}/${questions.length}`); // <-- this line saves score
+    }
+    </script>
+    
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson</title>
+<link rel="stylesheet" href="style.css">
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get("title");
+    const desc = params.get("desc");
+    const img = params.get("img");
+
+    document.getElementById("lesson-title").textContent = title;
+    document.getElementById("lesson-desc").textContent = desc;
+    document.getElementById("lesson-img").src = img;
+});
+</script>
+</head>
+<body>
+<header>
+    <h1 id="lesson-title">Lesson</h1>
+</header>
+
+<main>
+    <img id="lesson-img" alt="Lesson Image" style="width:100%; max-width:400px; border-radius:10px;">
+    <p id="lesson-desc"></p>
+    <a href="index.html"><button>⬅ Back</button></a>
+</main>
+
+</body>
+</html>

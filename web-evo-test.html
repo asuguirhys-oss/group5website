@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Evolution - Practice Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f1e3;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #6d4c41;
+        }
+        .question {
+            background: #fff3e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+        }
+        .question h3 {
+            margin-top: 0;
+        }
+        button {
+            display: inline-block;
+            margin: 20px 10px;
+            padding: 10px 20px;
+            background: #ff7043;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #e64a19;
+        }
+        .correct {
+            background-color: #c8e6c9;
+        }
+        .incorrect {
+            background-color: #ffcdd2;
+        }
+        #result {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 15px;
+        }
+        .answer-text {
+            margin-top: 8px;
+            font-style: italic;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Web Evolution - Practice Test</h1>
+
+    <form id="quizForm">
+        <div class="question" data-answer="B" data-answer-text="Only reading content">
+            <h3>1. What is Web 1.0 mostly known for?</h3>
+            <label><input type="radio" name="q1" value="A"> A. Reading and writing content</label><br>
+            <label><input type="radio" name="q1" value="B"> B. Only reading content</label><br>
+            <label><input type="radio" name="q1" value="C"> C. Virtual reality</label><br>
+            <label><input type="radio" name="q1" value="D"> D. Social media</label>
+        </div>
+
+        <div class="question" data-answer="C" data-answer-text="Web 2.0">
+            <h3>2. Which web version started social media sites like Facebook and YouTube?</h3>
+            <label><input type="radio" name="q2" value="A"> A. Web 1.0</label><br>
+            <label><input type="radio" name="q2" value="B"> B. Web 2.0</label><br>
+            <label><input type="radio" name="q2" value="C"> C. Web 2.0</label><br>
+            <label><input type="radio" name="q2" value="D"> D. Web 4.0</label>
+        </div>
+
+        <div class="question" data-answer="B" data-answer-text="People can also create and share content">
+            <h3>3. In Web 2.0, what is the main difference compared to Web 1.0?</h3>
+            <label><input type="radio" name="q3" value="A"> A. More 3D games</label><br>
+            <label><input type="radio" name="q3" value="B"> B. People can also create and share content</label><br>
+            <label><input type="radio" name="q3" value="C"> C. Only companies can post information</label><br>
+            <label><input type="radio" name="q3" value="D"> D. It works without the internet</label>
+        </div>
+
+        <div class="question" data-answer="A" data-answer-text="Semantic Web">
+            <h3>4. Web 3.0 is also called:</h3>
+            <label><input type="radio" name="q4" value="A"> A. Semantic Web</label><br>
+            <label><input type="radio" name="q4" value="B"> B. Static Web</label><br>
+            <label><input type="radio" name="q4" value="C"> C. Video Web</label><br>
+            <label><input type="radio" name="q4" value="D"> D. Social Web</label>
+        </div>
+
+        <div class="question" data-answer="C" data-answer-text="AI and personalized search">
+            <h3>5. Which of these is a feature of Web 3.0?</h3>
+            <label><input type="radio" name="q5" value="A"> A. Just text websites</label><br>
+            <label><input type="radio" name="q5" value="B"> B. No user interaction</label><br>
+            <label><input type="radio" name="q5" value="C"> C. AI and personalized search</label><br>
+            <label><input type="radio" name="q5" value="D"> D. Only black-and-white design</label>
+        </div>
+
+        <button type="button" onclick="checkAnswers()">Submit</button>
+        <button type="button" onclick="window.location.href='FIRST.html'">Back</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function checkAnswers() {
+            const questions = document.querySelectorAll('.question');
+            let score = 0;
+    
+            questions.forEach(q => {
+                const correctAnswer = q.getAttribute('data-answer');
+                const correctText = q.getAttribute('data-answer-text');
+                const selected = q.querySelector('input[type="radio"]:checked');
+    
+                q.classList.remove('correct', 'incorrect');
+    
+                const oldAnswer = q.querySelector('.answer-text');
+                if (oldAnswer) oldAnswer.remove();
+    
+                if (selected) {
+                    if (selected.value === correctAnswer) {
+                        q.classList.add('correct');
+                        score++;
+                    } else {
+                        q.classList.add('incorrect');
+                    }
+                } else {
+                    q.classList.add('incorrect');
+                }
+    
+                const answerDisplay = document.createElement('div');
+                answerDisplay.classList.add('answer-text');
+                answerDisplay.textContent = `Correct answer: ${correctText}`;
+                q.appendChild(answerDisplay);
+            });
+    
+            const resultText = `You scored ${score} out of ${questions.length}`;
+            document.getElementById('result').textContent = resultText;
+    
+            // ✅ Save under the correct test key
+            localStorage.setItem('score-Web Evolution', `${score}/${questions.length}`);
+    
+            // Optional: prompt for name and redirect
+            let userName = localStorage.getItem('userName');
+            if (!userName) {
+                userName = prompt('Enter your name for the certificate:', 'Web Explorer');
+                if (!userName) userName = 'Web Explorer';
+                localStorage.setItem('userName', userName);
+            }
+    
+            alert(`Test completed! Your score: ${score}/${questions.length}`);
+            window.location.href = 'FIRST.html';
+        }
+    </script>
+</body>
+</html>

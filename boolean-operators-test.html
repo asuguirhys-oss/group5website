@@ -1,0 +1,168 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Boolean Operators - Practice Test</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f7f1e3;
+                margin: 0;
+                padding: 20px;
+            }
+            h1 {
+                text-align: center;
+                color: #6d4c41;
+            }
+            .question {
+                background: #fff3e0;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 15px;
+                box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+            }
+            .question h3 {
+                margin-top: 0;
+            }
+            button {
+                display: inline-block;
+                margin: 20px 10px;
+                padding: 10px 20px;
+                background: #ff7043;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            button:hover {
+                background: #e64a19;
+            }
+            .correct {
+                background-color: #c8e6c9;
+            }
+            .incorrect {
+                background-color: #ffcdd2;
+            }
+            #result {
+                text-align: center;
+                font-weight: bold;
+                font-size: 18px;
+                margin-top: 15px;
+            }
+            .answer-text {
+                margin-top: 8px;
+                font-style: italic;
+                color: #333;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Boolean Operators - Practice Test</h1>
+
+        <form id="quizForm">
+            <div class="question" data-answer="A" data-answer-text="And">
+                <h3>1. Which Boolean operator is used to combine keywords so that both terms must appear in the results?</h3>
+                <label><input type="radio" name="q1" value="A"> A. And</label><br>
+                <label><input type="radio" name="q1" value="B"> B. Or</label><br>
+                <label><input type="radio" name="q1" value="C"> C. Not</label><br>
+                <label><input type="radio" name="q1" value="D"> D. All of the above</label>
+            </div>
+
+            <div class="question" data-answer="B" data-answer-text="Or">
+                <h3>2. Which Boolean operator would you use if you want results that include either of your search terms?</h3>
+                <label><input type="radio" name="q2" value="A"> A. And</label><br>
+                <label><input type="radio" name="q2" value="B"> B. Or</label><br>
+                <label><input type="radio" name="q2" value="C"> C. Nor</label><br>
+                <label><input type="radio" name="q2" value="D"> D. Why</label>
+            </div>
+
+            <div class="question" data-answer="C" data-answer-text="Exclude 'dogs' pages">
+                <h3>3. If you search for cats NOT dogs in a database, what will happen?</h3>
+                <label><input type="radio" name="q3" value="A"> A. Only “dogs” results</label><br>
+                <label><input type="radio" name="q3" value="B"> B. Exclude “cats” pages</label><br>
+                <label><input type="radio" name="q3" value="C"> C. Exclude “dogs” pages</label><br>
+                <label><input type="radio" name="q3" value="D"> D. Include both</label>
+            </div>
+
+            <div class="question" data-answer="C" data-answer-text="cookies NOT brownies">
+                <h3>4. You’re searching for “cookies” but don’t want results about “brownies.” What should you use?</h3>
+                <label><input type="radio" name="q4" value="A"> A. cookies OR brownies</label><br>
+                <label><input type="radio" name="q4" value="B"> B. cookies AND brownies</label><br>
+                <label><input type="radio" name="q4" value="C"> C. cookies NOT brownies</label><br>
+                <label><input type="radio" name="q4" value="D"> D. None of the above</label>
+            </div>
+
+            <div class="question" data-answer="B" data-answer-text="Or">
+                <h3>5. You’re looking for Dessert options and okay with either “cookies” or “cakes.” Which operator will help?</h3>
+                <label><input type="radio" name="q5" value="A"> A. And</label><br>
+                <label><input type="radio" name="q5" value="B"> B. Or</label><br>
+                <label><input type="radio" name="q5" value="C"> C. Not</label><br>
+                <label><input type="radio" name="q5" value="D"> D. With</label>
+            </div>
+
+            <button type="button" onclick="checkAnswers()">Submit</button>
+            <button type="button" class="back-btn" onclick="window.location.href='FIRST.html'">Back</button>
+        </form>
+
+        <div id="result"></div>
+
+        <script>
+            function checkAnswers() {
+                const questions = document.querySelectorAll('.question');
+                let score = 0;
+        
+                questions.forEach(q => {
+                    const correctAnswer = q.getAttribute('data-answer');
+                    const correctText = q.getAttribute('data-answer-text');
+                    const selected = q.querySelector('input[type="radio"]:checked');
+        
+                    q.classList.remove('correct', 'incorrect');
+        
+                    // Remove any old answer text
+                    const oldAnswer = q.querySelector('.answer-text');
+                    if (oldAnswer) oldAnswer.remove();
+        
+                    if (selected) {
+                        if (selected.value === correctAnswer) {
+                            q.classList.add('correct');
+                            score++;
+                        } else {
+                            q.classList.add('incorrect');
+                        }
+                    } else {
+                        q.classList.add('incorrect');
+                    }
+        
+                    // Show correct answer after submit
+                    const answerDisplay = document.createElement('div');
+                    answerDisplay.classList.add('answer-text');
+                    answerDisplay.textContent = `Correct answer: ${correctText}`;
+                    q.appendChild(answerDisplay);
+                });
+        
+                document.getElementById('result').textContent = `You scored ${score} out of ${questions.length}`;
+        
+                // ✅ Save score and go back
+                finishTest(`${score}/${questions.length}`);
+            }
+        
+            // ✅ This function is now outside of the main script and works properly
+            function finishTest(score) {
+                let userName = localStorage.getItem('userName');
+                if (!userName) {
+                    userName = prompt('Enter your name for the certificate:', 'Cookie Champ');
+                    if (!userName) userName = 'Cookie Champ';
+                    localStorage.setItem('userName', userName);
+                }
+        
+                localStorage.setItem('score-Boolean Operators', score);
+                alert(`Test completed! Your score: ${score}`);
+        
+                // Redirect to main page
+                window.location.href = 'index.html';
+            }
+        </script>
+    </body>
+    </html>
